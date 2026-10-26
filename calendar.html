@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Quest - Calendar & Time</title>
+    <link rel="stylesheet" href="calendar.css">
+    <link rel="stylesheet" href="dashboard-theme.css">
+    <script src="dashboard-theme.js" defer></script>
+</head>
+<body>
+
+    <p class="form-message" id="authStatus" aria-live="polite">
+        Checking your session...
+    </p>
+
+    <main class="dashboard-page" id="calendarDashboard" hidden>
+
+        <div class="dashboard-layout">
+
+            <aside class="sidebar" id="sidebar">
+
+                <a href="home.html" class="brand">
+                    <img src="assets/study-quest-logo.svg"
+                         alt="Study Quest Logo">
+                    <span>Study Quest</span>
+                </a>
+
+                <p class="sidebar-label">MENU</p>
+
+                <nav class="sidebar-nav" aria-label="Main navigation">
+                    <a class="nav-item" href="home.html"
+                       aria-label="Home" title="Home">
+                        <span class="nav-icon" aria-hidden="true">⌂</span>
+                        <span>Home</span>
+                    </a>
+                    <a class="nav-item" href="yourtasks.html"
+                       aria-label="Your Tasks" title="Your Tasks">
+                        <span class="nav-icon" aria-hidden="true">☑</span>
+                        <span>Your Tasks</span>
+                    </a>
+                    <a class="nav-item active" href="calendar.html"
+                       aria-label="Calendar & Time" title="Calendar & Time"
+                       aria-current="page">
+                        <span class="nav-icon" aria-hidden="true">▦</span>
+                        <span>Calendar &amp; Time</span>
+                    </a>
+                    <a class="nav-item" href="curriculum.html"
+                       aria-label="Curriculum" title="Curriculum">
+                        <span class="nav-icon" aria-hidden="true">▤</span>
+                        <span>Curriculum</span>
+                    </a>
+                </nav>
+
+                <div class="sidebar-note">
+                    <span class="note-icon">✦</span>
+                    <p>Every small step brings you closer to your goals.</p>
+                </div>
+
+                <button class="profile-button" id="profileButton"
+                        type="button" aria-label="Open user profile">
+
+                    <span class="profile-avatar" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="8" r="4"
+                                    fill="currentColor"/>
+                            <path d="M4.5 21c0-4.2 3.1-7 7.5-7s7.5 2.8 7.5 7"
+                                  fill="currentColor"/>
+                        </svg>
+                    </span>
+
+                    <span class="profile-details">
+                        <span class="profile-username"
+                              id="profileUsername">username</span>
+                        <span class="profile-level">LEVEL 0</span>
+                    </span>
+
+                    <span class="profile-arrow" aria-hidden="true">›</span>
+                </button>
+
+            </aside>
+
+            <section class="dashboard-main">
+                <header class="topbar curriculum-heading">
+                    <div>
+                        <p class="eyebrow">YOUR LEARNING SPACE</p>
+                        <h1>Calendar &amp; Time</h1>
+                        <p class="page-subtitle welcome-message">
+                            Manage your study sessions, deadlines, and daily
+                            schedule.
+                        </p>
+                    </div>
+                    <div class="curriculum-header-actions">
+                        <div class="topbar-badge">
+                            <span class="status-dot"></span>
+                            Your study schedule
+                        </div>
+                        <button class="logout-button" id="logoutButton"
+                                type="button">LOG OUT</button>
+                    </div>
+                </header>
+
+                <!-- TIMER -->
+
+                <section class="widget-group timer-section">
+                    <label>STUDY TIMER</label>
+
+                    <div class="timer-widget">
+
+                        <div class="timer-content">
+
+                            <label for="timerMode">TIMER MODE</label>
+
+                            <select id="timerMode" class="timer-mode">
+                                <option value="stopwatch">
+                                    Stopwatch — Count Up
+                                </option>
+                                <option value="countdown">
+                                    Countdown — Count to Zero
+                                </option>
+                                <option value="alarm">
+                                    Alarm Clock — Set a Time
+                                </option>
+                            </select>
+
+                            <h2 id="timerHeading">STOPWATCH</h2>
+
+                            <div class="timer-display" id="timerDisplay"
+                                 role="timer" aria-live="off">00:00:00</div>
+
+                            <p class="timer-status" id="timerStatus"
+                               aria-live="polite">Ready to study?</p>
+
+                            <p class="timer-hint" id="timerHint">
+                                Track how long you spend on a task.
+                            </p>
+
+                        </div>
+
+                        <div class="timer-side-panel">
+
+                            <div class="timer-settings" id="countdownSettings"
+                                 hidden>
+
+                                <label for="countdownMinutes">
+                                    MINUTES
+                                </label>
+                                <input id="countdownMinutes" type="number"
+                                       min="0" max="999" value="25">
+
+                                <label for="countdownSeconds">
+                                    SECONDS
+                                </label>
+                                <input id="countdownSeconds" type="number"
+                                       min="0" max="59" value="0">
+
+                            </div>
+
+                            <div class="timer-settings" id="alarmSettings"
+                                 hidden>
+
+                                <label for="alarmTime">ALARM TIME</label>
+                                <input id="alarmTime" type="time">
+
+                                <p class="setting-note">
+                                    If the time has passed, the alarm is
+                                    scheduled for tomorrow.
+                                </p>
+
+                            </div>
+
+                            <div class="timer-progress-track"
+                                 aria-hidden="true">
+                                <div class="timer-progress"
+                                     id="timerProgress"></div>
+                            </div>
+
+                            <div class="timer-buttons">
+                                <button class="timer-button primary"
+                                        id="startTimer" type="button">
+                                    ▶ START
+                                </button>
+
+                                <button class="timer-button"
+                                        id="pauseTimer" type="button"
+                                        disabled>
+                                    Ⅱ PAUSE
+                                </button>
+
+                                <button class="timer-button reset"
+                                        id="resetTimer" type="button">
+                                    ↻ RESET
+                                </button>
+                            </div>
+
+                            <button class="dismiss-alarm-button"
+                                    id="dismissAlarm" type="button" hidden>
+                                STOP ALARM SOUND
+                            </button>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CALENDAR -->
+
+                <section class="widget-group calendar-section">
+                    <label>CALENDAR</label>
+
+                    <div class="calendar-widget">
+
+                        <div class="calendar-panel">
+
+                            <div class="calendar-header">
+
+                                <button class="calendar-nav-button"
+                                        id="prevMonth" type="button"
+                                        aria-label="Previous month">‹</button>
+
+                                <h2 id="monthYear">Month Year</h2>
+
+                                <button class="calendar-nav-button"
+                                        id="nextMonth" type="button"
+                                        aria-label="Next month">›</button>
+
+                            </div>
+
+                            <button class="today-button"
+                                    id="todayButton" type="button">
+                                TODAY
+                            </button>
+
+                            <div class="calendar-grid calendar-weekdays"
+                                 aria-hidden="true">
+                                <span>SU</span>
+                                <span>MO</span>
+                                <span>TU</span>
+                                <span>WE</span>
+                                <span>TH</span>
+                                <span>FR</span>
+                                <span>SA</span>
+                            </div>
+
+                            <div class="calendar-grid" id="calendarDays"
+                                 aria-label="Calendar dates"></div>
+
+                            <div class="calendar-legend">
+                                <span class="legend-dot today-dot"></span>
+                                Today
+                                <span class="legend-dot task-dot"></span>
+                                Has tasks
+                            </div>
+
+                        </div>
+
+                        <div class="calendar-tasks-panel">
+
+                            <div class="calendar-task-header">
+                                <div>
+                                    <span class="panel-eyebrow">
+                                        YOUR SCHEDULE
+                                    </span>
+
+                                    <h2>Tasks</h2>
+
+                                    <p id="selectedDate">
+                                        Select a date
+                                    </p>
+                                </div>
+
+                                <button class="calendar-add-button"
+                                        id="addCalendarTask" type="button"
+                                        aria-label="Add a task">+</button>
+                            </div>
+
+                            <div class="calendar-task-list"
+                                 id="calendarTaskList"></div>
+
+                            <p class="empty-state" id="emptyMessage">
+                                No tasks scheduled for this date.
+                            </p>
+
+                            <p class="calendar-footnote">
+                                Select a date to view or manage its tasks.
+                            </p>
+
+                        </div>
+
+                    </div>
+                </section>
+
+            </section>
+
+        </div>
+
+        <!-- TASK POP-UP -->
+
+        <dialog class="task-dialog" id="taskDialog">
+            <form id="calendarTaskForm">
+
+                <div class="dialog-heading">
+                    <span class="panel-eyebrow">STUDY QUEST</span>
+                    <h2 id="taskDialogTitle">Add a calendar task</h2>
+                    <p id="taskDialogDate"></p>
+                </div>
+
+                <label for="calendarTaskTitle">Task name</label>
+                <input id="calendarTaskTitle" name="taskTitle"
+                       type="text" maxlength="100"
+                       placeholder="e.g. Review Chapter 1" required>
+
+                <div class="dialog-actions">
+                    <button class="dialog-cancel" id="cancelTaskButton"
+                            type="button">CANCEL</button>
+
+                    <button class="dialog-save" type="submit">
+                        SAVE TASK
+                    </button>
+                </div>
+
+            </form>
+        </dialog>
+
+        <!-- PROFILE POP-UP -->
+
+        <dialog class="task-dialog profile-dialog" id="profileDialog">
+            <div class="profile-dialog-content">
+
+                <div class="profile-avatar large-avatar">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="8" r="4"
+                                fill="currentColor"/>
+                        <path d="M4.5 21c0-4.2 3.1-7 7.5-7s7.5 2.8 7.5 7"
+                              fill="currentColor"/>
+                    </svg>
+                </div>
+
+                <span class="panel-eyebrow">YOUR STUDY QUEST</span>
+                <h2 id="profileDialogName">username</h2>
+                <p>LEVEL 0 · STUDY EXPLORER</p>
+
+                <button class="dialog-save" id="closeProfileButton"
+                        type="button">CLOSE</button>
+
+            </div>
+        </dialog>
+
+        <div class="toast" id="toast" role="status"
+             aria-live="polite" hidden></div>
+
+    </main>
+
+    <script src="auth.js" defer></script>
+    <script src="calendar.js" defer></script>
+</body>
+</html>
