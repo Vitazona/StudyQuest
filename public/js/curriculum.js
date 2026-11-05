@@ -286,15 +286,23 @@ function openFilePreview(file) {
   zoomLevel.textContent = `${previewZoom}%`;
   previewContent.replaceChildren();
 
+  const sizer = document.createElement("div");
+  sizer.className = "preview-sizer";
+  sizer.id = "previewSizer";
+
+  const stage = document.createElement("div");
+  stage.className = "preview-stage";
+  stage.id = "previewStage";
+
   if (isPdf) {
     const pdfViewer = document.createElement("iframe");
 
     pdfViewer.className = "preview-pdf";
     pdfViewer.title = `PDF preview: ${filename}`;
     pdfViewer.dataset.fileUrl = fileUrl;
-    pdfViewer.src = `${fileUrl}#toolbar=0&navpanes=0&zoom=${previewZoom}`;
+    pdfViewer.src = `${fileUrl}#toolbar=0&navpanes=0`;
 
-    previewContent.appendChild(pdfViewer);
+    stage.appendChild(pdfViewer);
   } else {
     const imageViewer = document.createElement("img");
 
@@ -313,8 +321,12 @@ function openFilePreview(file) {
       previewContent.appendChild(message);
     }, { once: true });
 
-    previewContent.appendChild(imageViewer);
+    stage.appendChild(imageViewer);
   }
+
+  sizer.appendChild(stage);
+  previewContent.appendChild(sizer);
+  applyPreviewZoom();
 
   previewSection.hidden = false;
 
@@ -324,24 +336,49 @@ function openFilePreview(file) {
   });
 }
 
+function applyPreviewZoom() {
+  zoomLevel.textContent = `${previewZoom}%`;
+
+  const sizer = document.getElementById("previewSizer");
+  const stage = document.getElementById("previewStage");
+  if (!sizer || !stage) return;
+
+  const scale = previewZoom / 100;
+  const baseH = "min(75vh, 850px)";
+
+  if (scale === 1) {
+    sizer.style.width = "100%";
+    sizer.style.height = baseH;
+    sizer.style.margin = "0 auto";
+    stage.style.width = "100%";
+    stage.style.height = baseH;
+    stage.style.transform = "none";
+    stage.style.transformOrigin = "top center";
+  } else if (scale < 1) {
+    sizer.style.width = `${scale * 100}%`;
+    sizer.style.height = `calc(${baseH} * ${scale})`;
+    sizer.style.margin = "0 auto";
+    stage.style.width = `${(100 / scale).toFixed(4)}%`;
+    stage.style.height = baseH;
+    stage.style.transform = `scale(${scale})`;
+    stage.style.transformOrigin = "0 0";
+  } else {
+    sizer.style.width = `${scale * 100}%`;
+    sizer.style.height = `calc(${baseH} * ${scale})`;
+    sizer.style.margin = "0";
+    stage.style.width = `${(100 / scale).toFixed(4)}%`;
+    stage.style.height = baseH;
+    stage.style.transform = `scale(${scale})`;
+    stage.style.transformOrigin = "0 0";
+  }
+}
+
 function changePreviewZoom(amount) {
   previewZoom = Math.max(
     MIN_PREVIEW_ZOOM,
     Math.min(MAX_PREVIEW_ZOOM, previewZoom + amount)
   );
-  zoomLevel.textContent = `${previewZoom}%`;
-
-  const pdfViewer = previewContent.querySelector(".preview-pdf");
-  if (pdfViewer) {
-    pdfViewer.src =
-      `${pdfViewer.dataset.fileUrl}#toolbar=0&navpanes=0&zoom=${previewZoom}`;
-    return;
-  }
-
-  const imageViewer = previewContent.querySelector(".preview-image");
-  if (imageViewer) {
-    imageViewer.style.zoom = `${previewZoom}%`;
-  }
+  applyPreviewZoom();
 }
 
 function openDeleteFileDialog(file, deleteButton) {
