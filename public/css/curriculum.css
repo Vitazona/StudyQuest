@@ -72,8 +72,8 @@ button {
   z-index: 10;
   display: flex;
   flex-direction: column;
-  width: 200px;
-  padding: 27px 19px 20px;
+  width: var(--sq-sidebar-width, 240px);
+  padding: 26px 18px 20px;
   color: #fff;
   background:
     linear-gradient(rgba(16, 0, 77, 0.4), rgba(16, 0, 77, 0.4)),
@@ -90,44 +90,47 @@ button {
 .brand {
   display: flex;
   align-items: center;
-  gap: 11px;
-  min-height: 48px;
-  margin: 0 7px 45px;
-  font-size: 19px;
+  gap: 12px;
+  min-height: 52px;
+  margin: 0 4px 34px;
+  font-size: 22px;
   font-weight: 750;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.3px;
+  text-decoration: none;
+  color: #ffffff;
 }
 
 .brand img {
-  width: 39px;
-  height: 39px;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 .sidebar-label {
-  margin: 0 12px 13px;
-  color: rgba(255, 255, 255, 0.62);
-  font-size: 10px;
+  margin: 0 10px 14px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
   font-weight: 800;
-  letter-spacing: 1.8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 13px;
-  min-height: 46px;
-  padding: 0 13px;
-  color: rgba(255, 255, 255, 0.82);
-  border-radius: 10px;
-  font-size: 13px;
+  gap: 14px;
+  min-height: 50px;
+  padding: 0 16px;
+  color: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  font-size: 15px;
   font-weight: 600;
   transition: background 0.2s, color 0.2s;
 }
@@ -319,9 +322,9 @@ button {
 /* MAIN LAYOUT */
 
 .main-content {
-  width: calc(100% - 200px);
+  width: calc(100% - var(--sq-sidebar-width, 240px));
   max-width: 1700px;
-  margin-left: 200px;
+  margin-left: var(--sq-sidebar-width, 240px);
   padding: 43px clamp(22px, 4vw, 62px) 25px;
 }
 
@@ -1036,19 +1039,19 @@ h2 {
 }
 
 .curriculum-heading .eyebrow {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.9) !important;
 }
 
 .curriculum-heading h1 {
   margin: 0;
-  color: #fff;
+  color: #ffffff !important;
   font-size: clamp(28px, 3vw, 36px);
   font-weight: 750;
   letter-spacing: -1px;
 }
 
 .curriculum-heading .page-subtitle {
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.92) !important;
 }
 
 .curriculum-header-actions {
