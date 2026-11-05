@@ -114,6 +114,18 @@
 
     applyAppearance();
 
+    window.addEventListener("storage", event => {
+        if (
+            event.key !== APPEARANCE_KEY &&
+            event.key !== LEGACY_THEME_KEY
+        ) {
+            return;
+        }
+
+        appearance = readAppearance();
+        applyAppearance();
+    });
+
     function createAppearanceControls(dialog) {
         const content = dialog.querySelector(".profile-dialog-content");
         if (!content || content.querySelector(".sq-appearance-setting")) {
@@ -221,8 +233,47 @@
         return dialog;
     }
 
+    function createAuthAppearanceDialog() {
+        const dialog = document.createElement("dialog");
+        dialog.id = "authAppearanceDialog";
+        dialog.className = "sq-profile-dialog";
+        dialog.setAttribute("aria-label", "Appearance settings");
+        dialog.innerHTML = `
+            <div class="sq-profile-content profile-dialog-content">
+                <span class="sq-profile-kicker">STUDY QUEST APPEARANCE</span>
+                <h2>Customize your theme</h2>
+                <button class="sq-profile-close" id="closeAuthAppearanceButton"
+                        type="button">CLOSE</button>
+            </div>
+        `;
+        document.body.append(dialog);
+
+        dialog.querySelector("#closeAuthAppearanceButton").addEventListener(
+            "click",
+            () => dialog.close()
+        );
+        dialog.addEventListener("click", event => {
+            if (event.target === dialog) {
+                dialog.close();
+            }
+        });
+
+        return dialog;
+    }
+
     function initializeAppearanceControl() {
         let dialog = document.getElementById("profileDialog");
+        const authThemeButton = document.getElementById("authThemeButton");
+
+        if (authThemeButton) {
+            dialog = createAuthAppearanceDialog();
+            createAppearanceControls(dialog);
+            authThemeButton.addEventListener("click", () => {
+                dialog.showModal();
+            });
+            return;
+        }
+
         const isHomeProfile = !dialog;
 
         if (isHomeProfile) {

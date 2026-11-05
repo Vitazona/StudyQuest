@@ -134,10 +134,6 @@
                                     </p>
                                 </div>
 
-                                <button class="add-task-button"
-                                        type="button" data-add-task="today">
-                                    + Add Task
-                                </button>
                             </div>
                         </section>
 
@@ -159,13 +155,12 @@
                                     <strong id="incompleteCount">0</strong>
                                 </div>
 
-                                <button class="progress-stat study-time-button"
-                                        id="studyTimerButton" type="button"
-                                        aria-label="Start or pause study timer">
+                                <div class="progress-stat study-time-button"
+                                     aria-label="Study timer from Calendar and Time">
                                     <span>STUDY TIME</span>
                                     <strong id="studyTime">0:00:00</strong>
-                                    <small id="timerStatus">TAP TO START</small>
-                                </button>
+                                    <small id="timerStatus">OPEN CALENDAR &amp; TIME TO START</small>
+                                </div>
                             </div>
                         </section>
 
@@ -188,10 +183,6 @@
                                     </p>
                                 </div>
 
-                                <button class="add-task-button"
-                                        type="button" data-add-task="daily">
-                                    + Add Daily Task
-                                </button>
                             </div>
                         </section>
 
@@ -214,10 +205,6 @@
                                     </p>
                                 </div>
 
-                                <button class="add-task-button"
-                                        type="button" data-add-task="weekly">
-                                    + Add Weekly Goal
-                                </button>
                             </div>
                         </section>
 
@@ -230,32 +217,6 @@
 
         <div class="toast" id="toast" role="status"
              aria-live="polite" hidden></div>
-
-        <dialog class="task-dialog" id="taskDialog">
-            <form id="taskForm">
-                <h2 id="taskDialogTitle">Add a task</h2>
-
-                <label for="taskTitle">Task name</label>
-                <input id="taskTitle" name="taskTitle" type="text"
-                       maxlength="100" placeholder="e.g. Review Chapter 1"
-                       required>
-
-                <label for="taskCategory">Task category</label>
-                <select id="taskCategory" name="taskCategory">
-                    <option value="today">Today's Focus</option>
-                    <option value="daily">Daily Task</option>
-                    <option value="weekly">Weekly Goal</option>
-                </select>
-
-                <div class="dialog-actions">
-                    <button class="dialog-cancel" id="cancelTaskButton"
-                            type="button">CANCEL</button>
-                    <button class="dialog-save" type="submit">
-                        SAVE TASK
-                    </button>
-                </div>
-            </form>
-        </dialog>
 
     </main>
 

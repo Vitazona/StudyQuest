@@ -51,6 +51,20 @@
     font-size: 12px;
 }
 
+:root[data-theme="dark"] .registration-page .account-divider,
+:root[data-theme="dark"] .registration-page .account-prompt,
+:root[data-theme="light"] .registration-page .account-divider,
+:root[data-theme="light"] .registration-page .account-prompt {
+    color: var(--auth-muted);
+}
+
+:root[data-theme="dark"] .registration-page .account-divider::before,
+:root[data-theme="dark"] .registration-page .account-divider::after,
+:root[data-theme="light"] .registration-page .account-divider::before,
+:root[data-theme="light"] .registration-page .account-divider::after {
+    background: var(--auth-border);
+}
+
 @media (max-width: 480px) {
     .registration-page .account-prompt {
         font-size: 11px;

@@ -7,14 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const $ = (id) => document.getElementById(id);
 
-    const toast = $("toast");
-    const taskDialog = $("taskDialog");
-    const taskForm = $("taskForm");
-    const taskTitle = $("taskTitle");
-    const taskCategory = $("taskCategory");
-
     const TASKS_KEY = "studyQuestTasks";
-    const TIMER_KEY = "studyQuestStudySeconds";
+    const TIMER_STATE_KEY = "studyQuestTimerState";
 
     const categories = {
         today: {
@@ -32,10 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     let tasks = loadTasks();
-    let studySeconds = loadStudySeconds();
-    let timerRunning = false;
-    let toastTimeout;
-
     // Safely load tasks saved in this browser.
     function loadTasks() {
         try {
@@ -56,46 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch {
             return [];
         }
-    }
-
-    function saveTasks() {
-        try {
-            localStorage.setItem(TASKS_KEY, JSON.stringify(tasks));
-        } catch {
-            showToast("Unable to save tasks in this browser.");
-        }
-    }
-
-    function loadStudySeconds() {
-        try {
-            const saved = Number(localStorage.getItem(TIMER_KEY));
-            return Number.isFinite(saved) && saved >= 0
-                ? Math.floor(saved)
-                : 0;
-        } catch {
-            return 0;
-        }
-    }
-
-    function saveStudySeconds() {
-        try {
-            localStorage.setItem(TIMER_KEY, String(studySeconds));
-        } catch {
-            // The timer still works while this page remains open.
-        }
-    }
-
-    // Display a temporary notification.
-    function showToast(message) {
-        if (!toast) return;
-
-        clearTimeout(toastTimeout);
-        toast.textContent = message;
-        toast.hidden = false;
-
-        toastTimeout = setTimeout(() => {
-            toast.hidden = true;
-        }, 3000);
     }
 
     // Current date.
@@ -196,50 +146,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     item.classList.add("completed");
                 }
 
-                const checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.className = "task-checkbox";
-                checkbox.checked = task.completed;
-                checkbox.setAttribute(
-                    "aria-label",
-                    `Mark ${task.title} as ${
-                        task.completed ? "incomplete" : "completed"
-                    }`
-                );
-
-                checkbox.addEventListener("change", () => {
-                    task.completed = checkbox.checked;
-                    saveTasks();
-                    renderTasks();
-
-                    showToast(
-                        task.completed
-                            ? "Quest completed! Great job!"
-                            : "Task marked as incomplete."
-                    );
-                });
-
                 const name = document.createElement("span");
                 name.className = "task-name";
                 name.textContent = task.title;
 
-                const deleteButton = document.createElement("button");
-                deleteButton.type = "button";
-                deleteButton.className = "delete-task-button";
-                deleteButton.textContent = "×";
-                deleteButton.setAttribute(
-                    "aria-label",
-                    `Delete ${task.title}`
-                );
-
-                deleteButton.addEventListener("click", () => {
-                    tasks = tasks.filter(item => item.id !== task.id);
-                    saveTasks();
-                    renderTasks();
-                    showToast("Task deleted.");
-                });
-
-                item.append(checkbox, name, deleteButton);
+                item.appendChild(name);
                 list.appendChild(item);
             });
         });
@@ -253,128 +164,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderTasks();
 
-    // Open the task creation dialog.
-    function openTaskDialog(category = "today") {
-        taskForm.reset();
-        taskCategory.value = category;
-
-        const titles = {
-            today: "Add Today's Focus",
-            daily: "Add a Daily Task",
-            weekly: "Add a Weekly Goal"
-        };
-
-        $("taskDialogTitle").textContent = titles[category];
-
-        if (typeof taskDialog.showModal === "function") {
-            taskDialog.showModal();
-            taskTitle.focus();
-        } else {
-            showToast("Your browser does not support the task dialog.");
-        }
-    }
-
-    document.querySelectorAll("[data-add-task]").forEach(button => {
-        button.addEventListener("click", () => {
-            openTaskDialog(button.dataset.addTask);
-        });
-    });
-
-    // Save a new task.
-    taskForm.addEventListener("submit", event => {
-        event.preventDefault();
-
-        const title = taskTitle.value.trim();
-        const category = taskCategory.value;
-
-        if (!title) {
-            showToast("Please enter a task name.");
-            taskTitle.focus();
-            return;
-        }
-
-        if (!categories[category]) {
-            showToast("Please select a valid task category.");
-            return;
-        }
-
-        tasks.push({
-            id: crypto.randomUUID
-                ? crypto.randomUUID()
-                : `${Date.now()}-${Math.random()}`,
-            title,
-            category,
-            completed: false
-        });
-
-        saveTasks();
-        renderTasks();
-        taskDialog.close();
-        showToast("New quest added successfully!");
-    });
-
-    $("cancelTaskButton").addEventListener("click", () => {
-        taskDialog.close();
-    });
-
-    // Close the dialog when clicking its backdrop.
-    taskDialog.addEventListener("click", event => {
-        if (event.target === taskDialog) {
-            taskDialog.close();
-        }
-    });
-
-    // Study timer.
-    function formatTime(totalSeconds) {
+    function formatTime(milliseconds) {
+        const totalSeconds = Math.max(0, Math.floor(milliseconds / 1000));
         const hours = Math.floor(totalSeconds / 3600);
         const minutes = Math.floor((totalSeconds % 3600) / 60);
         const seconds = totalSeconds % 60;
 
-        return [
-            hours,
-            minutes,
-            seconds
-        ].map(value => String(value).padStart(2, "0")).join(":");
+        return [hours, minutes, seconds]
+            .map(value => String(value).padStart(2, "0"))
+            .join(":");
     }
 
     function renderTimer() {
-        $("studyTime").textContent = formatTime(studySeconds);
+        let state = null;
 
-        $("timerStatus").textContent = timerRunning
-            ? "TAP TO PAUSE"
-            : "TAP TO START";
+        try {
+            state = JSON.parse(localStorage.getItem(TIMER_STATE_KEY) || "null");
+        } catch {
+            state = null;
+        }
 
-        $("studyTimerButton").setAttribute(
-            "aria-label",
-            timerRunning
-                ? "Pause study timer"
-                : "Start study timer"
-        );
+        if (!state || typeof state.valueMs !== "number") {
+            $("studyTime").textContent = "00:00:00";
+            $("timerStatus").textContent = "OPEN CALENDAR & TIME TO START";
+            return;
+        }
+
+        const elapsed = state.running && state.startedAt
+            ? Date.now() - state.startedAt
+            : 0;
+        const value = state.mode === "stopwatch"
+            ? state.valueMs + elapsed
+            : Math.max(0, state.valueMs - elapsed);
+
+        $("studyTime").textContent = formatTime(value);
+        $("timerStatus").textContent = state.status;
     }
 
-    $("studyTimerButton").addEventListener("click", () => {
-        timerRunning = !timerRunning;
-        renderTimer();
-
-        showToast(
-            timerRunning
-                ? "Study timer started. Stay focused!"
-                : "Study timer paused."
-        );
-    });
-
-    setInterval(() => {
-        if (!timerRunning) return;
-
-        studySeconds++;
-        saveStudySeconds();
-        renderTimer();
-    }, 1000);
-
     renderTimer();
-
-    // Save the timer when the user leaves or reloads the page.
-    window.addEventListener("pagehide", saveStudySeconds);
+    setInterval(renderTimer, 500);
+    window.addEventListener("storage", event => {
+        if (event.key === TIMER_STATE_KEY) renderTimer();
+    });
 
     // Respect the current authentication script's logout button.
     // Logout behavior remains managed by auth.js.

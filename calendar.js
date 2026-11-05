@@ -102,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let audioContext = null;
     let alarmInterval = null;
     let alarmSoundActive = false;
+    const TIMER_STATE_KEY = "studyQuestTimerState";
 
     function mode() {
         return $("timerMode").value;
@@ -162,6 +163,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         $("timerProgress").style.width =
             `${Math.max(0, Math.min(100, progress))}%`;
+    }
+
+    function publishTimerState() {
+        try {
+            localStorage.setItem(TIMER_STATE_KEY, JSON.stringify({
+                mode: mode(),
+                running: timerRunning,
+                startedAt,
+                valueMs: mode() === "stopwatch" ? elapsedMs : remainingMs,
+                status: $("timerStatus").textContent
+            }));
+        } catch {
+            showToast("Unable to sync the timer with the home page.");
+        }
     }
 
     function updateTimerButtons() {
@@ -259,6 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updateTimerButtons();
         updateTimerDisplay();
+        publishTimerState();
 
         if (finishedMode !== "stopwatch") {
             showToast(
@@ -396,6 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updateTimerButtons();
         updateTimerDisplay();
+        publishTimerState();
     }
 
     function pauseTimer() {
@@ -418,6 +435,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updateTimerButtons();
         updateTimerDisplay();
+        publishTimerState();
     }
 
     function resetTimer() {
@@ -436,6 +454,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updateTimerButtons();
         updateTimerDisplay();
+        publishTimerState();
     }
 
     function changeTimerMode() {

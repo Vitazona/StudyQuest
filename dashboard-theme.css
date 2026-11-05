@@ -12,6 +12,11 @@
     --sq-dialog-surface: #ffffff;
     --sq-dialog-text: #29263a;
     --sq-dialog-muted: #696579;
+    --sq-panel: #ffffff;
+    --sq-panel-alt: #f7f5fb;
+    --sq-control: #ffffff;
+    --sq-heading: #29263a;
+    --sq-link: #55339b;
     --sq-content-background: linear-gradient(
         160deg,
         #1500d4 0%,
@@ -32,6 +37,11 @@
     --sq-text: #ffffff;
     --sq-muted: #e1ddec;
     --sq-border: rgba(255, 255, 255, 0.18);
+    --sq-panel: #ffffff;
+    --sq-panel-alt: #f7f5ff;
+    --sq-control: #ffffff;
+    --sq-heading: #29263a;
+    --sq-link: #55339b;
     --sq-content-background: linear-gradient(
         160deg,
         #1500d4 0%,
@@ -64,6 +74,11 @@
     --sq-text: #29263a;
     --sq-muted: #696579;
     --sq-border: #e2deeb;
+    --sq-panel: #ffffff;
+    --sq-panel-alt: #f7f5fb;
+    --sq-control: #ffffff;
+    --sq-heading: #29263a;
+    --sq-link: #55339b;
     --sq-content-background: linear-gradient(145deg, #faf9fc, #f0eef6);
     --sq-content-text: #29263a;
     scrollbar-color: var(--sq-accent) #eeebf4;
@@ -291,6 +306,27 @@ textarea {
     padding: 0;
     border: 0;
     background: transparent;
+}
+
+#homePage .widget {
+    background: var(--sq-surface);
+    color: var(--sq-dialog-text);
+}
+
+#homePage .widget-description,
+#homePage .empty-state {
+    color: var(--sq-dialog-muted);
+}
+
+#homePage .task-item {
+    background: color-mix(in srgb, var(--sq-surface) 86%, var(--sq-accent));
+}
+
+#homePage .task-name,
+#homePage .date-month,
+#homePage .date-weekday,
+#homePage .date-day {
+    color: var(--sq-dialog-text);
 }
 
 #protectedTasks .task-toolbar {
@@ -650,6 +686,13 @@ textarea {
     box-shadow: 0 24px 70px rgba(15, 10, 35, 0.3);
 }
 
+#authAppearanceDialog {
+    position: fixed;
+    inset: 50% auto auto 50%;
+    margin: 0;
+    transform: translate(-50%, -50%);
+}
+
 .sq-profile-dialog::backdrop,
 .profile-dialog::backdrop,
 .app-dialog::backdrop,
@@ -893,6 +936,700 @@ textarea {
 
 :root[data-theme="dark"] .dashboard-main .timer-side-panel {
     background: #343047;
+}
+
+/* Keep page-specific legacy styles readable in dark mode. */
+:root[data-theme="dark"] .dashboard-main,
+:root[data-theme="dark"] .main-content {
+    color: var(--sq-content-text);
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    h1, h2, h3, h4, h5, h6, p, span, label, strong, small,
+    a, button, li, dt, dd, legend, th, td
+) {
+    color: var(--sq-text);
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    .page-subtitle, .welcome-message, .widget-description, .empty-state,
+    .timer-hint, .setting-note, .toolbar-heading p, .category-heading p,
+    .file-size-hint, .page-footer
+) {
+    color: var(--sq-muted);
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    .widget, .task-card, .category-section, .timer-widget,
+    .calendar-widget, .calendar-tasks-panel, .task-toolbar,
+    .overview-panel, .timer-side-panel
+) {
+    background: var(--sq-surface);
+    color: var(--sq-text);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    input, select, textarea, .timer-mode, .timer-settings input,
+    .calendar-widget input, .calendar-widget select
+) {
+    background: #302d42;
+    color: var(--sq-text);
+    border-color: #514c65;
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    option, optgroup
+) {
+    background: #302d42;
+    color: var(--sq-text);
+}
+
+:root[data-theme="dark"] .main-content :where(
+    h1, h2, h3, h4, h5, h6, p, span, label, strong, small,
+    a, button, li, dt, dd, legend, th, td
+) {
+    color: var(--sq-text);
+}
+
+/* Your Tasks uses a light card surface in every theme. Keep its content dark
+   and reserve light text for controls that have dark surfaces. */
+#protectedTasks :where(
+    .overview-panel, .category-section, .task-card, .empty-category,
+    .add-task-card, .app-dialog, .profile-dialog
+) {
+    background: var(--sq-panel);
+    color: var(--sq-heading);
+    border-color: var(--sq-border);
+}
+
+#protectedTasks :where(
+    .category-heading h2, .category-heading p, .category-count,
+    .task-card-title, .task-card-notes, .task-card-meta, .empty-category,
+    .empty-category strong, .empty-category p, .page-footer,
+    .overview-label, .overview-item strong, .toolbar-heading h2,
+    .toolbar-heading p, .profile-dialog-content h2,
+    .profile-description, .profile-stats strong, .profile-stats span,
+    .app-dialog h2, .app-dialog label, .app-dialog p
+) {
+    color: var(--sq-heading);
+}
+
+#protectedTasks :where(.category-heading p, .task-card-notes,
+    .empty-category p, .toolbar-heading p, .profile-description,
+    .page-footer) {
+    color: var(--sq-muted);
+}
+
+#protectedTasks :where(.category-symbol, .overview-icon) {
+    background: var(--sq-panel-alt);
+    border-color: var(--sq-border);
+    color: var(--sq-link);
+}
+
+#protectedTasks .category-count {
+    background: var(--sq-panel-alt);
+    border-color: var(--sq-border);
+    color: var(--sq-link);
+}
+
+#protectedTasks .add-task-card {
+    background: var(--sq-panel-alt);
+    border-color: var(--sq-border);
+    color: var(--sq-link);
+}
+
+#protectedTasks .add-task-card :where(.plus, span) {
+    color: var(--sq-link);
+}
+
+#protectedTasks .empty-category {
+    background: var(--sq-panel-alt);
+    border-color: var(--sq-border);
+}
+
+#protectedTasks .task-card.completed {
+    background: color-mix(in srgb, var(--sq-panel) 92%, var(--sq-accent));
+}
+
+#protectedTasks :where(.task-action-button, .dialog-close,
+    .app-dialog input, .app-dialog select, .app-dialog textarea) {
+    background: var(--sq-control);
+    border-color: var(--sq-border);
+    color: var(--sq-heading);
+}
+
+#protectedTasks :where(.task-action-button, .dialog-close):hover {
+    background: var(--sq-panel-alt);
+}
+
+#protectedTasks .profile-stats > div {
+    background: var(--sq-panel-alt);
+    border-color: var(--sq-border);
+}
+
+#protectedTasks .profile-close-button,
+#protectedTasks .primary-button {
+    color: var(--sq-accent-foreground);
+    background: var(--sq-accent);
+}
+
+#protectedTasks .secondary-button {
+    color: var(--sq-heading);
+    background: var(--sq-panel-alt);
+    border-color: var(--sq-border);
+}
+
+#protectedTasks .confirm-dialog .danger-button {
+    color: #ffffff;
+}
+
+.sq-appearance-setting,
+.sq-profile-dialog,
+.profile-dialog,
+.app-dialog {
+    color: var(--sq-dialog-text);
+}
+
+.sq-appearance-setting :where(strong, span, label, button),
+.sq-profile-dialog :where(h2, p, button, label, strong, span),
+.profile-dialog :where(h2, p, button, label, strong, span),
+.app-dialog :where(h2, p, button, label, strong, span) {
+    color: var(--sq-dialog-text);
+}
+
+.sq-appearance-setting :where(span, .sq-control-label),
+.sq-profile-dialog .profile-description,
+.profile-dialog .profile-description,
+.app-dialog .dialog-eyebrow,
+.app-dialog label span {
+    color: var(--sq-dialog-muted);
+}
+
+.sq-appearance-setting,
+.sq-profile-dialog,
+.profile-dialog,
+.app-dialog {
+    background: var(--sq-dialog-surface);
+    border-color: var(--sq-border);
+}
+
+.sq-theme-select,
+.sq-appearance-setting input {
+    background: var(--sq-dialog-surface);
+    color: var(--sq-dialog-text);
+    border-color: var(--sq-border);
+}
+
+.sq-theme-select option {
+    background: var(--sq-dialog-surface);
+    color: var(--sq-dialog-text);
+}
+
+:root[data-theme="gradient"] .dashboard-main :where(
+    .calendar-nav-button, .calendar-add-button, .timer-button.primary,
+    .dismiss-alarm-button
+),
+:root[data-theme="light"] .dashboard-main :where(
+    .calendar-nav-button, .calendar-add-button, .timer-button.primary,
+    .dismiss-alarm-button
+) {
+    color: #ffffff;
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    .calendar-nav-button, .calendar-add-button, .timer-button.primary,
+    .dismiss-alarm-button
+) {
+    color: #ffffff;
+}
+
+:root[data-theme="gradient"] .dashboard-main .calendar-day.selected,
+:root[data-theme="light"] .dashboard-main .calendar-day.selected,
+:root[data-theme="dark"] .dashboard-main .calendar-day.selected {
+    background: var(--sq-accent);
+    border-color: var(--sq-accent);
+    color: var(--sq-accent-foreground);
+}
+
+:root[data-theme="gradient"] .dashboard-main .today-button,
+:root[data-theme="light"] .dashboard-main .today-button {
+    background: var(--sq-panel-alt);
+    color: var(--sq-link);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="dark"] .dashboard-main .today-button {
+    background: var(--sq-panel-alt);
+    color: var(--sq-link);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="gradient"] .dashboard-main :where(
+    .timer-button:not(.primary), .secondary-button
+),
+:root[data-theme="light"] .dashboard-main :where(
+    .timer-button:not(.primary), .secondary-button
+) {
+    background: var(--sq-panel-alt);
+    color: var(--sq-link);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    .timer-button:not(.primary), .secondary-button
+) {
+    background: var(--sq-panel-alt);
+    color: var(--sq-link);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="dark"] .main-content :where(
+    input, select, textarea, option, optgroup
+) {
+    background: #302d42;
+    color: var(--sq-text);
+    border-color: #514c65;
+}
+
+/* Theme tokens for legacy page components, including generated calendar items. */
+:root[data-theme="dark"] {
+    --sq-panel: #242234;
+    --sq-panel-alt: #343047;
+    --sq-control: #302d42;
+    --sq-heading: #f7f5fc;
+    --sq-link: #d7c8ff;
+}
+
+:root[data-theme="light"] {
+    --sq-panel: #ffffff;
+    --sq-panel-alt: #f7f5fb;
+    --sq-control: #ffffff;
+    --sq-heading: #29263a;
+    --sq-link: #55339b;
+}
+
+:root[data-theme="dark"] :where(
+    .dashboard-main, .main-content, .sidebar, .profile-button
+) {
+    color: var(--sq-text);
+}
+
+:root[data-theme="light"] :where(
+    .dashboard-main, .main-content, .sidebar, .profile-button
+) {
+    color: var(--sq-text);
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    .calendar-widget, .calendar-panel, .calendar-tasks-panel,
+    .timer-widget, .timer-side-panel, .widget, .task-card,
+    .category-section, .task-toolbar, .overview-panel
+) {
+    background: var(--sq-panel);
+    color: var(--sq-text);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="light"] .dashboard-main :where(
+    .calendar-widget, .calendar-panel, .calendar-tasks-panel,
+    .timer-widget, .timer-side-panel, .widget, .task-card,
+    .category-section, .task-toolbar, .overview-panel
+) {
+    background: var(--sq-panel);
+    color: var(--sq-text);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    .calendar-header h2, .calendar-weekdays, .calendar-legend,
+    .calendar-day, .calendar-task-header h2, .calendar-task-header p,
+    .calendar-task-item, .calendar-task-text, .calendar-footnote,
+    .timer-display, .timer-status, .timer-content h2,
+    .widget-heading, .task-name
+) {
+    color: var(--sq-text);
+}
+
+:root[data-theme="light"] .dashboard-main :where(
+    .calendar-header h2, .calendar-weekdays, .calendar-legend,
+    .calendar-day, .calendar-task-header h2, .calendar-task-header p,
+    .calendar-task-item, .calendar-task-text, .calendar-footnote,
+    .timer-display, .timer-status, .timer-content h2,
+    .widget-heading, .task-name
+) {
+    color: var(--sq-text);
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    .calendar-day, .calendar-day.other-month
+) {
+    background: var(--sq-panel-alt);
+    color: var(--sq-text);
+}
+
+:root[data-theme="light"] .dashboard-main :where(
+    .calendar-day, .calendar-day.other-month
+) {
+    background: var(--sq-panel-alt);
+    color: var(--sq-text);
+}
+
+:root[data-theme="dark"] .dashboard-main .calendar-day.selected,
+:root[data-theme="light"] .dashboard-main .calendar-day.selected {
+    background: var(--sq-accent);
+    border-color: var(--sq-accent);
+    color: var(--sq-accent-foreground);
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    .calendar-weekdays, .calendar-legend, .calendar-footnote,
+    .calendar-task-header p, .panel-eyebrow, .timer-hint, .setting-note,
+    .empty-state, .widget-description
+) {
+    color: var(--sq-muted);
+}
+
+:root[data-theme="light"] .dashboard-main :where(
+    .calendar-weekdays, .calendar-legend, .calendar-footnote,
+    .calendar-task-header p, .panel-eyebrow, .timer-hint, .setting-note,
+    .empty-state, .widget-description
+) {
+    color: var(--sq-muted);
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    .calendar-task-item, .timer-side-panel, .task-item
+) {
+    background: var(--sq-panel-alt);
+    border-color: var(--sq-border);
+    color: var(--sq-text);
+}
+
+:root[data-theme="light"] .dashboard-main :where(
+    .calendar-task-item, .timer-side-panel, .task-item
+) {
+    background: var(--sq-panel-alt);
+    border-color: var(--sq-border);
+    color: var(--sq-text);
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    .timer-mode, .timer-settings input, .calendar-widget input,
+    .calendar-widget select, .task-dialog input, .task-dialog select,
+    input, select, textarea
+),
+:root[data-theme="light"] .dashboard-main :where(
+    .timer-mode, .timer-settings input, .calendar-widget input,
+    .calendar-widget select, .task-dialog input, .task-dialog select,
+    input, select, textarea
+) {
+    background: var(--sq-control);
+    color: var(--sq-text);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="dark"] :where(
+    .task-dialog, .profile-dialog, .sq-profile-dialog
+),
+:root[data-theme="light"] :where(
+    .task-dialog, .profile-dialog, .sq-profile-dialog
+) {
+    background: var(--sq-panel);
+    color: var(--sq-text);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="dark"] :where(
+    .task-dialog h2, .task-dialog label, .task-dialog p,
+    .profile-dialog h2, .profile-dialog p, .profile-dialog label,
+    .sq-profile-dialog h2, .sq-profile-dialog p
+),
+:root[data-theme="light"] :where(
+    .task-dialog h2, .task-dialog label, .task-dialog p,
+    .profile-dialog h2, .profile-dialog p, .profile-dialog label,
+    .sq-profile-dialog h2, .sq-profile-dialog p
+) {
+    color: var(--sq-text);
+}
+
+:root[data-theme="dark"] :where(
+    .task-dialog input, .task-dialog select, .task-dialog option,
+    .sq-theme-select, .sq-theme-select option
+),
+:root[data-theme="light"] :where(
+    .task-dialog input, .task-dialog select, .task-dialog option,
+    .sq-theme-select, .sq-theme-select option
+) {
+    background: var(--sq-control);
+    color: var(--sq-text);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="dark"] input::placeholder,
+:root[data-theme="dark"] textarea::placeholder {
+    color: var(--sq-muted);
+    opacity: 1;
+}
+
+:root[data-theme="light"] input::placeholder,
+:root[data-theme="light"] textarea::placeholder {
+    color: var(--sq-muted);
+    opacity: 1;
+}
+
+:root[data-theme="dark"] .sidebar :where(.sidebar-label, .sidebar-note p),
+:root[data-theme="light"] .sidebar :where(.sidebar-label, .sidebar-note p) {
+    color: var(--sq-muted);
+}
+
+:root[data-theme="dark"] .main-content :where(
+    .upload-section, .preview-section, .files-section,
+    .selected-file, .upload-dropzone, .file-card
+) {
+    background: var(--sq-panel);
+    color: var(--sq-text);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="light"] .main-content :where(
+    .upload-section, .preview-section, .files-section,
+    .selected-file, .upload-dropzone, .file-card
+) {
+    background: var(--sq-panel);
+    color: var(--sq-text);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="dark"] .main-content :where(
+    .upload-dropzone strong, .file-card strong, .file-meta,
+    .file-size-hint, .muted, .message, .page-footer
+),
+:root[data-theme="light"] .main-content :where(
+    .upload-dropzone strong, .file-card strong, .file-meta,
+    .file-size-hint, .muted, .message, .page-footer
+) {
+    color: var(--sq-text);
+}
+
+:root[data-theme="dark"] .main-content :where(
+    .upload-dropzone, .choose-file-button, .file-action,
+    input, select, textarea
+),
+:root[data-theme="light"] .main-content :where(
+    .upload-dropzone, .choose-file-button, .file-action,
+    input, select, textarea
+) {
+    background: var(--sq-control);
+    color: var(--sq-text);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="light"] #homePage .progress-widget {
+    background: var(--sq-panel);
+    color: var(--sq-heading);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="light"] #homePage .progress-widget :where(
+    span, strong, small
+) {
+    color: var(--sq-heading);
+}
+
+:root[data-theme="dark"] #homePage .progress-widget {
+    background: var(--sq-panel);
+    color: var(--sq-text);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="dark"] #homePage .progress-widget :where(
+    span, strong, small
+) {
+    color: var(--sq-text);
+}
+
+:root[data-theme="dark"] #homePage .progress-widget .study-time-button small,
+:root[data-theme="light"] #homePage .progress-widget .study-time-button small {
+    color: var(--sq-muted);
+}
+
+.confirm-dialog {
+    width: min(440px, calc(100% - 32px));
+}
+
+.confirm-content h2 {
+    margin: 0;
+    color: var(--sq-text);
+    font-size: 21px;
+    font-weight: 400;
+}
+
+.confirm-content > p:not(.dialog-eyebrow) {
+    margin: 12px 0;
+    color: var(--sq-muted);
+    line-height: 1.5;
+}
+
+.confirm-content .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.confirm-content .dialog-cancel,
+.confirm-content .dialog-save {
+    min-height: 38px;
+    padding: 9px 13px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.confirm-content .dialog-cancel {
+    color: var(--sq-text);
+    background: var(--sq-panel-alt);
+    border: 1px solid var(--sq-border);
+}
+
+.confirm-content .dialog-save {
+    color: var(--sq-accent-foreground);
+    background: var(--sq-accent);
+    border: 1px solid var(--sq-accent);
+}
+
+/* Final component contrast map for both selectable themes. */
+:root[data-theme="gradient"] .dashboard-main :where(
+    .widget, .progress-widget, .calendar-panel, .calendar-tasks-panel,
+    .timer-widget, .timer-side-panel, .task-card, .category-section,
+    .task-toolbar, .overview-panel
+),
+:root[data-theme="light"] .dashboard-main :where(
+    .widget, .progress-widget, .calendar-panel, .calendar-tasks-panel,
+    .timer-widget, .timer-side-panel, .task-card, .category-section,
+    .task-toolbar, .overview-panel
+) {
+    background: var(--sq-panel);
+    color: var(--sq-heading);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="gradient"] .dashboard-main :where(
+    .widget, .progress-widget, .calendar-panel, .calendar-tasks-panel,
+    .timer-widget, .timer-side-panel, .task-card, .category-section,
+    .task-toolbar, .overview-panel
+) :where(h1, h2, h3, h4, h5, h6, p, span, strong, small, label, button),
+:root[data-theme="light"] .dashboard-main :where(
+    .widget, .progress-widget, .calendar-panel, .calendar-tasks-panel,
+    .timer-widget, .timer-side-panel, .task-card, .category-section,
+    .task-toolbar, .overview-panel
+) :where(h1, h2, h3, h4, h5, h6, p, span, strong, small, label, button) {
+    color: var(--sq-heading);
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    .widget, .progress-widget, .calendar-panel, .calendar-tasks-panel,
+    .timer-widget, .timer-side-panel, .task-card, .category-section,
+    .task-toolbar, .overview-panel
+) :where(h1, h2, h3, h4, h5, h6, p, span, strong, small, label, button) {
+    color: var(--sq-text);
+}
+
+:root[data-theme="gradient"] .dashboard-main :where(
+    .calendar-weekdays, .calendar-legend, .calendar-footnote,
+    .calendar-task-header p, .panel-eyebrow, .timer-hint, .setting-note,
+    .empty-state, .widget-description
+),
+:root[data-theme="light"] .dashboard-main :where(
+    .calendar-weekdays, .calendar-legend, .calendar-footnote,
+    .calendar-task-header p, .panel-eyebrow, .timer-hint, .setting-note,
+    .empty-state, .widget-description
+) {
+    color: var(--sq-muted);
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    .calendar-day, .calendar-day.other-month, .calendar-task-item,
+    .task-item, .timer-side-panel
+) {
+    background: var(--sq-panel-alt);
+    color: var(--sq-text);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="gradient"] .dashboard-main :where(
+    .calendar-day, .calendar-day.other-month, .calendar-task-item,
+    .task-item, .timer-side-panel
+),
+:root[data-theme="light"] .dashboard-main :where(
+    .calendar-day, .calendar-day.other-month, .calendar-task-item,
+    .task-item, .timer-side-panel
+) {
+    background: var(--sq-panel-alt);
+    color: var(--sq-heading);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="gradient"] .dashboard-main :where(
+    input, select, textarea, .timer-mode, .timer-settings input,
+    .calendar-widget input, .calendar-widget select
+),
+:root[data-theme="light"] .dashboard-main :where(
+    input, select, textarea, .timer-mode, .timer-settings input,
+    .calendar-widget input, .calendar-widget select
+) {
+    background: var(--sq-control);
+    color: var(--sq-heading);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="dark"] .dashboard-main :where(
+    input, select, textarea, .timer-mode, .timer-settings input,
+    .calendar-widget input, .calendar-widget select
+) {
+    background: var(--sq-control);
+    color: var(--sq-text);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="gradient"] .main-content,
+:root[data-theme="light"] .main-content {
+    color: var(--sq-text);
+}
+
+:root[data-theme="gradient"] .main-content :where(
+    .upload-section, .preview-section, .files-section, .file-card,
+    .selected-file, .upload-dropzone, .preview-content
+),
+:root[data-theme="light"] .main-content :where(
+    .upload-section, .preview-section, .files-section, .file-card,
+    .selected-file, .upload-dropzone, .preview-content
+) {
+    background: var(--sq-panel);
+    color: var(--sq-heading);
+    border-color: var(--sq-border);
+}
+
+:root[data-theme="gradient"] .main-content :where(
+    h1, h2, h3, h4, h5, h6, p, span, strong, small, label, button,
+    a, .file-name, .file-meta, .file-size-hint, .muted, .message,
+    .page-footer, #zoomLevel
+),
+:root[data-theme="light"] .main-content :where(
+    h1, h2, h3, h4, h5, h6, p, span, strong, small, label, button,
+    a, .file-name, .file-meta, .file-size-hint, .muted, .message,
+    .page-footer, #zoomLevel
+) {
+    color: var(--sq-heading);
+}
+
+:root[data-theme="dark"] .main-content :where(
+    h1, h2, h3, h4, h5, h6, p, span, strong, small, label, button,
+    a, .file-name, .file-meta, .file-size-hint, .muted, .message,
+    .page-footer, #zoomLevel
+) {
+    color: var(--sq-text);
 }
 
 @media (max-width: 850px) {

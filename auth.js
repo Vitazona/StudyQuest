@@ -1,6 +1,42 @@
 
 "use strict";
 
+(() => {
+    let theme = "gradient";
+
+    try {
+        const saved = localStorage.getItem("studyQuestAppearance");
+        const legacyTheme = localStorage.getItem("studyQuestTheme");
+        const appearance = saved ? JSON.parse(saved) : null;
+
+        if (
+            appearance &&
+            ["gradient", "light", "dark"].includes(appearance.theme)
+        ) {
+            theme = appearance.theme;
+        } else if (["light", "dark"].includes(legacyTheme)) {
+            theme = legacyTheme;
+        }
+    } catch (error) {
+        console.warn("Unable to apply saved theme on auth page:", error);
+    }
+
+    document.documentElement.dataset.theme = theme;
+
+    window.addEventListener("storage", event => {
+        if (event.key !== "studyQuestAppearance") return;
+
+        try {
+            const appearance = JSON.parse(event.newValue || "{}");
+            if (["gradient", "light", "dark"].includes(appearance.theme)) {
+                document.documentElement.dataset.theme = appearance.theme;
+            }
+        } catch (error) {
+            console.warn("Unable to update auth page theme:", error);
+        }
+    });
+})();
+
 async function requestJSON(url, options = {}) {
     const response = await fetch(url, {
         credentials: "same-origin",

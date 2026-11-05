@@ -26,6 +26,14 @@ const profileDialog = document.getElementById("profileDialog");
 const profileDialogName = document.getElementById("profileDialogName");
 const closeProfileButton = document.getElementById("closeProfileButton");
 const profileUsername = document.getElementById("profileUsername");
+const deleteFileDialog = document.getElementById("deleteFileDialog");
+const deleteFileMessage = document.getElementById("deleteFileMessage");
+const cancelDeleteFileButton = document.getElementById(
+  "cancelDeleteFileButton"
+);
+const confirmDeleteFileButton = document.getElementById(
+  "confirmDeleteFileButton"
+);
 
 const MAX_FILE_SIZE = 15 * 1024 * 1024;
 const ALLOWED_EXTENSIONS = [".pdf", ".jpg", ".jpeg", ".png", ".webp"];
@@ -35,6 +43,7 @@ const PREVIEW_ZOOM_STEP = 25;
 
 let selectedFileObject = null;
 let previewZoom = 100;
+let pendingDelete = null;
 
 /* GENERAL HELPERS */
 
@@ -335,6 +344,70 @@ function changePreviewZoom(amount) {
   }
 }
 
+function openDeleteFileDialog(file, deleteButton) {
+  const filename = file.filename || file.originalName || "Untitled file";
+
+  pendingDelete = {
+    file,
+    deleteButton
+  };
+  deleteFileMessage.textContent =
+    `"${filename}" will be permanently removed from your study library.`;
+  deleteFileDialog.showModal();
+}
+
+async function deletePendingFile() {
+  if (!pendingDelete) return;
+
+  const { file, deleteButton } = pendingDelete;
+  const filename = file.filename || file.originalName || "Untitled file";
+  const fileId = String(file.id);
+
+  deleteButton.disabled = true;
+  deleteButton.textContent = "Deleting...";
+  confirmDeleteFileButton.disabled = true;
+
+  try {
+    const response = await fetch(
+      `/api/curriculum/${encodeURIComponent(fileId)}`,
+      {
+        method: "DELETE",
+        credentials: "same-origin"
+      }
+    );
+
+    if (response.status === 401 || response.status === 403) {
+      window.location.href = "login.html";
+      return;
+    }
+
+    if (!response.ok) {
+      throw new Error(await getErrorMessage(response));
+    }
+
+    if (previewTitle.textContent === filename) {
+      previewContent.replaceChildren();
+      previewSection.hidden = true;
+    }
+
+    deleteFileDialog.close();
+    pendingDelete = null;
+    showMessage(filesMessage, "File deleted successfully.", "success");
+    await loadFiles();
+  } catch (error) {
+    console.error("Delete error:", error);
+    showMessage(
+      filesMessage,
+      error.message || "Unable to delete this file.",
+      "error"
+    );
+    deleteButton.disabled = false;
+    deleteButton.textContent = "Delete";
+  } finally {
+    confirmDeleteFileButton.disabled = false;
+  }
+}
+
 zoomOutButton.addEventListener("click", () => {
   changePreviewZoom(-PREVIEW_ZOOM_STEP);
 });
@@ -434,54 +507,7 @@ function createFileCard(file) {
   deleteButton.textContent = "Delete";
 
   deleteButton.addEventListener("click", async () => {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete "${filename}"?`
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
-    deleteButton.disabled = true;
-    deleteButton.textContent = "Deleting...";
-
-    try {
-      const response = await fetch(
-        `/api/curriculum/${encodeURIComponent(fileId)}`,
-        {
-          method: "DELETE",
-          credentials: "same-origin"
-        }
-      );
-
-      if (response.status === 401 || response.status === 403) {
-        window.location.href = "login.html";
-        return;
-      }
-
-      if (!response.ok) {
-        throw new Error(await getErrorMessage(response));
-      }
-
-      // Close the preview if the deleted file is currently displayed.
-      if (previewTitle.textContent === filename) {
-        previewContent.replaceChildren();
-        previewSection.hidden = true;
-      }
-
-      showMessage(filesMessage, "File deleted successfully.", "success");
-      await loadFiles();
-    } catch (error) {
-      console.error("Delete error:", error);
-      showMessage(
-        filesMessage,
-        error.message || "Unable to delete this file.",
-        "error"
-      );
-
-      deleteButton.disabled = false;
-      deleteButton.textContent = "Delete";
-    }
+    openDeleteFileDialog(file, deleteButton);
   });
 
   actions.append(viewButton, downloadLink, deleteButton);
@@ -489,6 +515,20 @@ function createFileCard(file) {
 
   return card;
 }
+
+cancelDeleteFileButton.addEventListener("click", () => {
+  deleteFileDialog.close();
+  pendingDelete = null;
+});
+
+confirmDeleteFileButton.addEventListener("click", deletePendingFile);
+
+deleteFileDialog.addEventListener("click", event => {
+  if (event.target === deleteFileDialog) {
+    deleteFileDialog.close();
+    pendingDelete = null;
+  }
+});
 
 /* LOAD SAVED FILES */
 

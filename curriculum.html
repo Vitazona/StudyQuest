@@ -220,6 +220,22 @@
     </div>
   </dialog>
 
+  <dialog class="task-dialog confirm-dialog" id="deleteFileDialog">
+    <div class="confirm-content">
+      <p class="dialog-eyebrow">LIBRARY MANAGEMENT</p>
+      <h2>Delete this file?</h2>
+      <p id="deleteFileMessage">
+        This file will be permanently removed from your study library.
+      </p>
+      <div class="dialog-actions">
+        <button class="dialog-cancel" id="cancelDeleteFileButton"
+                type="button">CANCEL</button>
+        <button class="dialog-save danger-button" id="confirmDeleteFileButton"
+                type="button">DELETE</button>
+      </div>
+    </div>
+  </dialog>
+
   <script src="auth.js" defer></script>
   <script src="curriculum.js" defer></script>
 </body>
