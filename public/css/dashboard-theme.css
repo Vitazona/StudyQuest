@@ -1,6 +1,6 @@
 :root {
     color-scheme: dark;
-    --sq-sidebar-width: 200px;
+    --sq-sidebar-width: 240px;
     --sq-font: "Segoe UI", Arial, sans-serif;
     --sq-bg: #201d33;
     --sq-surface: #252238;
@@ -181,7 +181,7 @@ textarea {
     min-height: 0;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 24px 15px 18px;
+    padding: 26px 18px 20px;
     background:
         linear-gradient(rgba(12, 8, 39, 0.64), rgba(12, 8, 39, 0.64)),
         linear-gradient(
@@ -199,38 +199,71 @@ textarea {
 
 .dashboard-page .sidebar .brand,
 .app-layout > .sidebar .brand {
-    margin: 0 5px 35px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 52px;
+    margin: 0 4px 34px;
     flex-shrink: 0;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.dashboard-page .sidebar .brand img,
+.app-layout > .sidebar .brand img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+.dashboard-page .sidebar .brand span,
+.app-layout > .sidebar .brand span {
+    font-size: 22px;
+    font-weight: 750;
+    letter-spacing: -0.3px;
+    white-space: nowrap;
 }
 
 .dashboard-page .sidebar .sidebar-label,
 .app-layout > .sidebar .sidebar-label {
-    margin: 0 10px 12px;
+    margin: 0 10px 14px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.75;
 }
 
 .dashboard-page .sidebar-nav,
 .app-layout > .sidebar .sidebar-nav {
+    display: flex;
+    flex-direction: column;
     flex-shrink: 0;
-    gap: 7px;
+    gap: 9px;
 }
 
 .dashboard-page .sidebar .nav-item,
 .app-layout > .sidebar .nav-item {
-    min-height: 44px;
+    min-height: 50px;
     justify-content: flex-start;
-    gap: 11px;
-    padding: 0 11px;
-    border-radius: 9px;
-    font-size: 13px;
+    gap: 14px;
+    padding: 0 16px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
     text-align: left;
+    text-decoration: none;
+    transition: background 0.18s ease, transform 0.18s ease;
 }
 
 .dashboard-page .sidebar .nav-icon,
 .app-layout > .sidebar .nav-icon {
-    flex: 0 0 22px;
-    width: 22px;
-    font-size: 18px;
+    flex: 0 0 24px;
+    width: 24px;
+    font-size: 21px;
     text-align: center;
+    line-height: 1;
 }
 
 .dashboard-page .sidebar .sidebar-note,
@@ -447,7 +480,7 @@ textarea {
 
 .curriculum-heading .eyebrow {
     margin: 0 0 8px;
-    color: color-mix(in srgb, var(--sq-content-text) 82%, var(--sq-accent));
+    color: rgba(255, 255, 255, 0.9);
     font-size: 11px;
     font-weight: 750;
     letter-spacing: 1.5px;
@@ -456,7 +489,7 @@ textarea {
 
 .curriculum-heading h1 {
     margin: 0;
-    color: var(--sq-content-text);
+    color: #ffffff;
     font-family: var(--sq-font);
     font-size: clamp(28px, 3vw, 36px);
     font-weight: 750;
@@ -467,7 +500,7 @@ textarea {
 .curriculum-heading .page-subtitle {
     max-width: 680px;
     margin: 9px 0 0;
-    color: color-mix(in srgb, var(--sq-content-text) 88%, transparent);
+    color: rgba(255, 255, 255, 0.92);
     font-size: 14px;
     line-height: 1.6;
 }
@@ -1431,6 +1464,15 @@ textarea {
     border-color: var(--sq-border);
 }
 
+:root[data-theme="light"] #homePage .progress-stat {
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+:root[data-theme="light"] #homePage .progress-stat:hover {
+    background: rgba(0, 0, 0, 0.06);
+}
+
 :root[data-theme="light"] #homePage .progress-widget :where(
     span, strong, small
 ) {
@@ -1441,6 +1483,15 @@ textarea {
     background: var(--sq-panel);
     color: var(--sq-text);
     border-color: var(--sq-border);
+}
+
+:root[data-theme="dark"] #homePage .progress-stat {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+:root[data-theme="dark"] #homePage .progress-stat:hover {
+    background: rgba(255, 255, 255, 0.08);
 }
 
 :root[data-theme="dark"] #homePage .progress-widget :where(
@@ -1612,24 +1663,59 @@ textarea {
 }
 
 :root[data-theme="gradient"] .main-content :where(
+    .upload-section, .preview-section, .files-section, .file-card,
+    .selected-file, .upload-dropzone, .preview-content, .task-dialog
+) :where(
     h1, h2, h3, h4, h5, h6, p, span, strong, small, label, button,
     a, .file-name, .file-meta, .file-size-hint, .muted, .message,
-    .page-footer, #zoomLevel
+    #zoomLevel
 ),
 :root[data-theme="light"] .main-content :where(
+    .upload-section, .preview-section, .files-section, .file-card,
+    .selected-file, .upload-dropzone, .preview-content, .task-dialog
+) :where(
     h1, h2, h3, h4, h5, h6, p, span, strong, small, label, button,
     a, .file-name, .file-meta, .file-size-hint, .muted, .message,
-    .page-footer, #zoomLevel
+    #zoomLevel
 ) {
     color: var(--sq-heading);
 }
 
 :root[data-theme="dark"] .main-content :where(
+    .upload-section, .preview-section, .files-section, .file-card,
+    .selected-file, .upload-dropzone, .preview-content, .task-dialog
+) :where(
     h1, h2, h3, h4, h5, h6, p, span, strong, small, label, button,
     a, .file-name, .file-meta, .file-size-hint, .muted, .message,
-    .page-footer, #zoomLevel
+    #zoomLevel
 ) {
     color: var(--sq-text);
+}
+
+/* Explicit high-contrast white styling for topbar curriculum heading & footer */
+.curriculum-heading .eyebrow,
+:root .curriculum-heading .eyebrow,
+:root[data-theme="gradient"] .curriculum-heading .eyebrow {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.curriculum-heading h1,
+:root .curriculum-heading h1,
+:root[data-theme="gradient"] .curriculum-heading h1 {
+    color: #ffffff !important;
+}
+
+.curriculum-heading .page-subtitle,
+:root .curriculum-heading .page-subtitle,
+:root[data-theme="gradient"] .curriculum-heading .page-subtitle {
+    color: rgba(255, 255, 255, 0.92) !important;
+}
+
+.curriculum-main .page-footer,
+.curriculum-main .page-footer span,
+:root[data-theme="gradient"] .curriculum-main .page-footer,
+:root[data-theme="gradient"] .curriculum-main .page-footer span {
+    color: rgba(255, 255, 255, 0.78) !important;
 }
 
 @media (max-width: 850px) {
