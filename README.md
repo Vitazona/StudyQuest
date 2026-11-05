@@ -79,7 +79,8 @@ npm install
 ```
 
 ### 3. Environment Setup
-Copy `.env.example` to `.env` (if not already present):
+Copy `.env.example` to `.env` (if not already present). The application also
+loads `backend/.env` for setups that keep backend configuration there:
 
 ```bash
 cp .env.example .env
@@ -130,4 +131,3 @@ Once running, access the web application at: [http://localhost:3000](http://loca
 - `GET /api/curriculum` - List uploaded files for the logged-in user
 - `GET /api/curriculum/:id` - Stream or download a file from GridFS
 - `DELETE /api/curriculum/:id` - Delete a file from GridFS
-

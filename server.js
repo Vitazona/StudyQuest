@@ -1,8 +1,12 @@
 "use strict";
 
-require("dotenv").config();
-
 const dns = require("node:dns");
+const path = require("node:path");
+
+const dotenv = require("dotenv");
+
+dotenv.config();
+dotenv.config({ path: path.join(__dirname, "backend", ".env") });
 
 // Fix for Windows / Node.js DNS SRV resolution issue with MongoDB Atlas
 try {
@@ -17,7 +21,6 @@ try {
 const express = require("express");
 const session = require("express-session");
 const { MongoStore } = require("connect-mongo");
-const path = require("node:path");
 const multer = require("multer");
 
 const { client, DATABASE_NAME, connectDB } = require("./config/db");
@@ -126,4 +129,3 @@ async function startServer() {
 }
 
 startServer();
-
