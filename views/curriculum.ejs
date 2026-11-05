@@ -1,70 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Curriculum | Study Quest</title>
-  <link rel="stylesheet" href="curriculum.css">
-  <link rel="stylesheet" href="dashboard-theme.css">
-  <script src="dashboard-theme.js" defer></script>
+    <%- include('partials/_head', { title: 'Curriculum' }) %>
+    <link rel="stylesheet" href="/css/curriculum.css">
 </head>
 <body>
 
   <div class="app-layout">
-    <aside class="sidebar">
-      <a href="home.html" class="brand">
-        <img src="assets/study-quest-logo.svg" alt="Study Quest Logo">
-        <span>Study Quest</span>
-      </a>
 
-      <p class="sidebar-label">MENU</p>
-
-      <nav class="sidebar-nav" aria-label="Main navigation">
-        <a href="home.html" class="nav-item" aria-label="Home" title="Home">
-          <span class="nav-icon" aria-hidden="true">⌂</span>
-          <span>Home</span>
-        </a>
-        <a href="yourtasks.html" class="nav-item"
-           aria-label="Your Tasks" title="Your Tasks">
-          <span class="nav-icon" aria-hidden="true">☑</span>
-          <span>Your Tasks</span>
-        </a>
-        <a href="calendar.html" class="nav-item"
-           aria-label="Calendar & Time" title="Calendar & Time">
-          <span class="nav-icon" aria-hidden="true">▦</span>
-          <span>Calendar &amp; Time</span>
-        </a>
-        <a href="curriculum.html" class="nav-item active"
-           aria-label="Curriculum" title="Curriculum" aria-current="page">
-          <span class="nav-icon" aria-hidden="true">▤</span>
-          <span>Curriculum</span>
-        </a>
-      </nav>
-
-      <div class="sidebar-bottom">
-        <div class="sidebar-note">
-          <span class="note-icon">✦</span>
-          <p>Every small step brings you closer to your goals.</p>
-        </div>
-      </div>
-
-      <button class="profile-button" id="profileButton" type="button"
-              aria-label="Open user profile">
-        <span class="profile-avatar" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="8" r="4" fill="currentColor"/>
-            <path d="M4.5 21c0-4.2 3.1-7 7.5-7s7.5 2.8 7.5 7"
-                  fill="currentColor"/>
-          </svg>
-        </span>
-        <span class="profile-details">
-          <span class="profile-username" id="profileUsername">username</span>
-          <span class="profile-level">LEVEL 0</span>
-        </span>
-        <span class="profile-arrow" aria-hidden="true">›</span>
-      </button>
-    </aside>
+    <%- include('partials/_sidebar') %>
 
     <main class="main-content curriculum-main">
       <header class="topbar curriculum-heading">
@@ -213,7 +157,7 @@
         </svg>
       </div>
       <span class="profile-dialog-eyebrow">YOUR STUDY QUEST</span>
-      <h2 id="profileDialogName">username</h2>
+      <h2 id="profileDialogName"><%= typeof user !== 'undefined' && user.username ? user.username : 'username' %></h2>
       <p>LEVEL 0 · STUDY EXPLORER</p>
       <button class="profile-dialog-close" id="closeProfileButton"
               type="button">CLOSE</button>
@@ -236,7 +180,8 @@
     </div>
   </dialog>
 
-  <script src="auth.js" defer></script>
-  <script src="curriculum.js" defer></script>
+  <script src="/js/auth.js" defer></script>
+  <script src="/js/curriculum.js" defer></script>
 </body>
 </html>
+

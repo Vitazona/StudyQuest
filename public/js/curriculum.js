@@ -115,7 +115,7 @@ async function checkLogin() {
     });
 
     if (!response.ok) {
-      window.location.href = "login.html";
+      window.location.href = "/login";
       return false;
     }
 
@@ -229,7 +229,7 @@ uploadForm.addEventListener("submit", async (event) => {
     });
 
     if (response.status === 401 || response.status === 403) {
-      window.location.href = "login.html";
+      window.location.href = "/login";
       return;
     }
 
@@ -377,7 +377,7 @@ async function deletePendingFile() {
     );
 
     if (response.status === 401 || response.status === 403) {
-      window.location.href = "login.html";
+      window.location.href = "/login";
       return;
     }
 
@@ -546,7 +546,7 @@ async function loadFiles() {
     });
 
     if (response.status === 401 || response.status === 403) {
-      window.location.href = "login.html";
+      window.location.href = "/login";
       return;
     }
 

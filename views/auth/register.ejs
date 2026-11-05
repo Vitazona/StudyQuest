@@ -1,24 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Quest - Sign Up</title>
-    <link rel="stylesheet" href="dashboard-theme.css">
-    <link rel="stylesheet" href="registration.css">
+    <%- include('../partials/_head', { title: 'Sign Up' }) %>
+    <link rel="stylesheet" href="/css/registration.css">
 </head>
 <body>
-    <button class="auth-theme-button" id="authThemeButton" type="button"
-            aria-label="Open appearance settings"
-            title="Appearance settings">◐</button>
+    <%- include('../partials/_theme-button') %>
+
     <main class="auth-page registration-page">
         <div class="purple-strip"></div>
 
         <section class="auth-background">
             <div class="auth-content">
                 <img
-                    src="assets/study-quest-logo.svg"
+                    src="/assets/study-quest-logo.svg"
                     alt="Study Quest Logo"
                     class="auth-logo"
                 >
@@ -141,7 +136,7 @@
 
                         <div class="account-prompt">
                             <span>Already have an account?</span>
-                            <a class="btn-outline" href="login.html">
+                            <a class="btn-outline" href="/login">
                                 LOG IN
                             </a>
                         </div>
@@ -153,7 +148,7 @@
         <div class="purple-strip bottom-strip"></div>
     </main>
 
-    <script src="dashboard-theme.js" defer></script>
-    <script src="auth.js" defer></script>
+    <script src="/js/auth.js" defer></script>
 </body>
 </html>
+

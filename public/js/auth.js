@@ -140,7 +140,7 @@ if (loginForm) {
                 })
             });
 
-            window.location.href = "home.html";
+            window.location.href = "/home";
         } catch (error) {
             showMessage(message, error.message);
             validateLogin();
@@ -239,7 +239,7 @@ if (registerForm) {
             );
 
             window.location.href =
-                "login.html?username=" +
+                "/login?username=" +
                 encodeURIComponent(username.value.trim());
         } catch (error) {
             showMessage(message, error.message);
@@ -288,7 +288,7 @@ if (protectedPage) {
                 authStatus.hidden = true;
             }
         } catch {
-            window.location.href = "login.html";
+            window.location.href = "/login";
         }
     }
 
@@ -308,7 +308,7 @@ if (logoutButton) {
                 body: JSON.stringify({})
             });
 
-            window.location.href = "login.html";
+            window.location.href = "/login";
         } catch (error) {
             alert(error.message || "Unable to log out. Please try again.");
             logoutButton.disabled = false;

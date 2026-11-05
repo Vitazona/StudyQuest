@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             if (!response.ok) {
-                window.location.replace("login.html");
+                window.location.replace("/login");
                 return;
             }
 
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            window.location.replace("login.html");
+            window.location.replace("/login");
         } catch {
             showToast("Unable to connect to the server.");
         }
